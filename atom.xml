@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.h5per.com/"/>
-  <updated>2020-05-19T08:34:58.988Z</updated>
+  <updated>2020-05-23T12:07:41.937Z</updated>
   <id>http://www.h5per.com/</id>
   
   <author>
@@ -15,6 +15,66 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>全新Chrome Devtool Performance使用指南</title>
+    <link href="http://www.h5per.com/2020/05/23/Performance/"/>
+    <id>http://www.h5per.com/2020/05/23/Performance/</id>
+    <published>2020-05-23T06:19:11.000Z</published>
+    <updated>2020-05-23T12:07:41.937Z</updated>
+    
+    <content type="html"><![CDATA[<p>运行时性能表现（<code>runtime performance</code>）指的是当你的页面在浏览器运行时的性能表现，而不是在下载页面的时候的表现。这篇指南将会告诉你怎么用<code>Chrome DevToos Performance</code>功能去分析运行时性能表现。在<code>RAIL</code>性能评估模型下，你可以在这篇指南中可以学到怎么去用这个<code>performance</code>功能去分析<code>Response</code>, <code>Animation</code>, 以及 <code>Idle</code> 这三个性能指标。</p><p>让我们开始吧<br>在这篇指南中，我们会用Performance工具去分析一个现有的在线DEMO，然后教会你怎么去分析，从而找到性能瓶颈。</p><p>打开Chrome的匿名模式。匿名模式可以保证Chrome在一个相对干净的环境下运行。比如说，你安装了许多chrome插件，这些插件可能会影响我们分析性能表现。<br>在匿名模式下打开右边这个链接，DEMO，这个网页就是我们要用来分析的DEMO。这个页面里都是很多上下移动的蓝色小方块。<br>按下Command+Opiton+I（Mac）或者Control+shift+I (Windows, Linux) 来打开Devtools</p><p><img src="/imgs/v2-92652c95d9ffcb3d13d24442d2583314_720w.jpg" alt></p><p>模拟移动设备的CPU<br>移动设备的CPU一般比台式机和笔记本弱很多。当你想分析页面的时候，可以用CPU控制器（CPU Throttling）来模拟移动端设备CPU。</p><p>在DevTools中，点击 Performance 的 tab。<br>确保 Screenshots checkbox 被选中<br>点击 Capture Settings（⚙️）按钮，DevTools会展示很多设置，来模拟各种状况<br>对于模拟CPU，选择2x slowdown，于是Devtools就开始模拟两倍低俗CPU</p><p><img src="/imgs/v2-6d2aa1e65c19c427c6ab19276419b79e_720w.jpg" alt></p><p>设置DEMO<br>为了使得这个DEMO有相对统一的运行表现（不同的读者，机器的性能千差万别）。这个DEMO提供了自定义功能，用来确保这个DEMO的统一表现。</p><p>一直点击 Add 10 这个按钮直到你能很明显看到蓝色小方块移动变慢，在性能比较好的机器上，大概要点击20次左右。<br>点击 Optimize按钮，你会发现蓝色小方块会变的很快而且动画变得平滑。<br>点击 un-optimize 按钮，蓝色小方块又会变成之前的模样。<br>记录运行时性能表现<br>在之前的DEMO中，当你运行优化模式的时候，蓝色小方块移动地非常快。为什么呢？明明两个模式都是移动了同样数量的小方块而且移动的时间也一样。那么现在我们在Performance界面下录制下发生的一切，并且学习如何分析这个记录，从而找到非优化模式下的性能瓶颈。</p><p>在DevTools中，点击 Record 。这时候Devtools就开始录制各种性能指标</p><p><img src="/imgs/v2-9f22b5385f17efd4341cbe25058cf35f_720w.jpg" alt></p><p>等待几分钟<br>点击Stop按钮，Devtools停止录制，处理数据，然后显示性能报告</p><p><img src="/imgs/v2-2fb06d74a5d8e54e0a947d616d3f68f8_720w.jpg" alt></p><p>wow，看起来有非常多的数据，别害怕，我们一个一个来介绍</p><p>分析报告<br>一旦你得到了页面的性能表现报告，那么就可以用它来分析页面的性能，从而找到性能瓶颈。</p><p>分析每一秒的帧<br>FPS（frames per second）是用来分析动画的一个主要性能指标。能保持在60的FPS的话，那么用户体验就是不错的。</p><p>观察FPS图表，如果你发现了一个红色的长条，那么就说明这些帧存在严重问题，有可能导致非常差的用户体验。一般来说，绿色的长条越高，说明FPS越高，用户体验越好。</p><p><img src="/imgs/v2-fd871e192ca970f82b13334c60d3bd7a_720w.jpg" alt></p><p>就在FPS图表下方，你会看到CPU图表。在CPU图表中的各种颜色与Summary面板里的颜色是相互对应的，Summary面板就在Performance面板的下方。CPU图表中的各种颜色代表着在这个时间段内，CPU在各种处理上所花费的时间。如果你看到了某个处理占用了大量的时间，那么这可能就是一个可以找到性能瓶颈的线索。</p><p><img src="/imgs/v2-1cc581f23f53c6c83c2d1fbf68cfb15c_720w.jpg" alt></p><p>把鼠标移动到FPS，CPU或者NET图表之上，DevToos就会展示这个时间点界面的截图。左右移动鼠标，可以重发当时的屏幕录像。这被称为scrubbing, 他可以用来分析动画的各个细节。</p><p><img src="/imgs/v2-a95f54334770c724b75c21b7fe88a9d6_720w.jpg" alt></p><p>在Frames图表中，把鼠标移动到绿色条状图上，Devtools会展示这个帧的FPS。每个帧可能都在60以下，都没有达到60的标准。</p><p><img src="/imgs/v2-5e4f0fbcaca27f49ebb20c4fc16549e5_720w.jpg" alt></p><p>当然这个对于DEMO，可以相当容易观察到性能的问题。但是在现实使用场景下，就不是那么容易观察到了。所以要把常常使用这些工具来分析页面。</p><p>小功能：显示实时FPS面板</p><p>另外一个好用的小工具就是实时FPS面板，它可以实时展示页面的FPS指标</p><p>按下 Command+Shift+P（Mac）或者 Control+Shift+P(Windows, Linux) 打开命令菜单<br>输入Rendering，点选Show Rendering<br>在Rendering面板里，激活FPS Meter。FPS实时面板就出现在页面的右上方。</p><p><img src="/imgs/v2-8ed26d65f1d99968ba55b894e63eb914_720w.jpg" alt></p><p>关闭FPS Meter只要按下Escape就可以了。这篇指南里暂时用不上这个功能。<br>定位瓶颈<br>现在已经确定到这个页面的动画性能表现不太好，那么下一步就是找到为什么</p><p>注意Summary面板，你会发现CPU花费了大量的时间在rendering上。因为提高性能就是一门做减法的艺术，你的目标就是减少rendering的时间</p><p><img src="/imgs/v2-b93f1d9d060a369b2de3fd30fd6fc5d4_720w.jpg" alt></p><p>展开Main图表，Devtools展示了主线程运行状况。X轴代表着时间。每个长条代表着一个event。长条越长就代表这个event花费的时间越长。Y轴代表了调用栈（call stack）。在栈里，上面的event调用了下面的event。</p><p><img src="/imgs/v2-a010d11aa34123e41e9a6a26ea5d7b8b_720w.jpg" alt="1"></p><p>在性能报告中，有很多的数据。可以通过双击，拖动等等动作来放大缩小报告范围，从各种时间段来观察分析报告。</p><p><img src="/imgs/v2-3f18b42f1f7335958072d36641862afa_720w.jpg" alt></p><p>在事件长条的右上角出，如果出现了红色小三角，说明这个事件是存在问题的，需要特别注意。<br>双击这个带有红色小三角的的事件。在Summary面板会看到详细信息。注意reveal这个链接，双击它会让高亮触发这个事件的event。如果点击了app.js:94这个链接，就会跳转到对应的代码处。</p><p><img src="/imgs/v2-ca44395a2fe6751356b3dc97a997b689_720w.jpg" alt></p><p>在app.update这个事件的长条下方，有很多被触发的紫色长条。如果放大这些事件长条，你会看到它们每个都带有红色小三角。点击其中一个紫色事件长条，Devtools在Summary面板里展示了更多关于这个事件的信息。确实，这里有很多reflow的警告。<br>在summary面板里点击app.js:70链接，Devtools会跳转到需要优化的代码处</p><p><img src="/imgs/v2-06ca9ac560ddd4c98eb20729e5d232c7_720w.jpg" alt></p><p>OK！<code>Devtools</code>里面还有很多很多指标需要你去探索，但是，对于怎么用<code>Devtools</code>去分析网页的运行时性能表现，你现在已经有了一个基本的概念。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;运行时性能表现（&lt;code&gt;runtime performance&lt;/code&gt;）指的是当你的页面在浏览器运行时的性能表现，而不是在下载页面的时候的表现。这篇指南将会告诉你怎么用&lt;code&gt;Chrome DevToos Performance&lt;/code&gt;功能去分析运行时性
+      
+    
+    </summary>
+    
+      <category term="chrome" scheme="http://www.h5per.com/categories/chrome/"/>
+    
+    
+      <category term="Performance" scheme="http://www.h5per.com/tags/Performance/"/>
+    
+      <category term="chrome" scheme="http://www.h5per.com/tags/chrome/"/>
+    
+      <category term="调试" scheme="http://www.h5per.com/tags/%E8%B0%83%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>浏览器渲染过程和重绘(repaints)和重排(reflows)</title>
+    <link href="http://www.h5per.com/2020/05/23/repaint-reflows/"/>
+    <id>http://www.h5per.com/2020/05/23/repaint-reflows/</id>
+    <published>2020-05-23T03:03:14.000Z</published>
+    <updated>2020-05-23T03:43:49.432Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="浏览器的渲染过程"><a href="#浏览器的渲染过程" class="headerlink" title="浏览器的渲染过程"></a>浏览器的渲染过程</h3><ol><li><p>浏览器解析<code>html</code>源码，然后创建一个 DOM树。<br>在<code>DOM</code>树中，每一个<code>HTML</code>标签都有一个对应的节点，并且每一个文本也都会有一个对应的文本节点。</p></li><li><p>浏览器解析<code>CSS</code>代码，计算出最终的样式数据。<br>对<code>CSS</code>代码中非法的语法她会直接忽略掉。<br>解析<code>CSS</code>的时候会按照如下顺序来定义优先级：浏览器默认设置，用户设置，外链样式，内联样式，html中的<code>style</code>。</p></li><li><p>构建出<code>DOM</code>树，并且计算出样式数据后，下一步就是构建一个 渲染树（<code>rendering tree</code>）。渲染树会忽略掉不需要渲染的元素，比如<code>head</code>、<code>display:none</code>的元素等。</p></li><li><p>一旦渲染树创建好了，浏览器就可以根据渲染树直接把页面绘制到屏幕上。</p><a id="more"></a></li></ol><p><img src="/imgs/5b543bda00015ce406240289.jpeg" alt="浏览器渲染过程"></p><h3 id="重绘和重排（repaints-and-reflows）"><a href="#重绘和重排（repaints-and-reflows）" class="headerlink" title="重绘和重排（repaints and reflows）"></a>重绘和重排（repaints and reflows）</h3><p><strong>重绘</strong>（<code>repaint</code>或<code>redraw</code>）：当盒子的位置、大小以及其他属性，例如颜色、字体大小等都确定下来之后，浏览器便把这些原色都按照各自的特性绘制一遍，将内容呈现在页面上。重绘是指一个元素外观的改变所触发的浏览器行为，浏览器会根据元素的新属性重新绘制，使元素呈现新的外观。</p><p><strong>触发重绘的条件</strong>：改变元素外观属性。如：<code>color</code>，<code>background-color</code>等。</p><p><strong>重排</strong>（重构/回流/reflow）：当渲染树中的一部分(或全部)因为元素的规模尺寸，布局，隐藏等改变而需要重新构建, 这就称为回流(<code>reflow</code>)。每个页面至少需要一次回流，就是在页面第一次加载的时候。</p><p>重绘和重排的关系：在回流的时候，浏览器会使渲染树中受到影响的部分失效，并重新构造这部分渲染树，完成回流后，浏览器会重新绘制受影响的部分到屏幕中，该过程称为重绘。</p><p><strong>重排必定会引发重绘，但重绘不一定会引发重排。</strong><br>触发重排的条件：任何页面布局和几何属性的改变都会触发重排，比如：</p><ol><li>页面渲染初始化；(无法避免)</li><li>添加或删除可见的DOM元素；</li><li>元素位置的改变，或者使用动画；</li><li>元素尺寸的改变——大小，外边距，边框；</li><li>浏览器窗口尺寸的变化（resize事件发生时）；</li><li>填充内容的改变，比如文本的改变或图片大小改变而引起的计算值宽度和高度的改变；</li><li>读取某些元素属性：（<code>offsetLeft/Top/Height/Width</code>,　<code>clientTop/Left/Width/Height</code>,　<code>scrollTop/Left/Width/Height</code>,　<code>width/height,　getComputedStyle()</code>,　<code>currentStyle(IE)</code>　)</li></ol><p><strong>重绘发生的情况：</strong><br>重绘发生在元素的可见的外观被改变，但并没有影响到布局的时候。比如，仅修改DOM元素的字体颜色。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;浏览器的渲染过程&quot;&gt;&lt;a href=&quot;#浏览器的渲染过程&quot; class=&quot;headerlink&quot; title=&quot;浏览器的渲染过程&quot;&gt;&lt;/a&gt;浏览器的渲染过程&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;浏览器解析&lt;code&gt;html&lt;/code&gt;源码，然后创建一个 DOM树。&lt;br&gt;在&lt;code&gt;DOM&lt;/code&gt;树中，每一个&lt;code&gt;HTML&lt;/code&gt;标签都有一个对应的节点，并且每一个文本也都会有一个对应的文本节点。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;浏览器解析&lt;code&gt;CSS&lt;/code&gt;代码，计算出最终的样式数据。&lt;br&gt;对&lt;code&gt;CSS&lt;/code&gt;代码中非法的语法她会直接忽略掉。&lt;br&gt;解析&lt;code&gt;CSS&lt;/code&gt;的时候会按照如下顺序来定义优先级：浏览器默认设置，用户设置，外链样式，内联样式，html中的&lt;code&gt;style&lt;/code&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;构建出&lt;code&gt;DOM&lt;/code&gt;树，并且计算出样式数据后，下一步就是构建一个 渲染树（&lt;code&gt;rendering tree&lt;/code&gt;）。渲染树会忽略掉不需要渲染的元素，比如&lt;code&gt;head&lt;/code&gt;、&lt;code&gt;display:none&lt;/code&gt;的元素等。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;一旦渲染树创建好了，浏览器就可以根据渲染树直接把页面绘制到屏幕上。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="浏览器" scheme="http://www.h5per.com/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/"/>
+    
+    
+      <category term="repaint" scheme="http://www.h5per.com/tags/repaint/"/>
+    
+      <category term="reflows" scheme="http://www.h5per.com/tags/reflows/"/>
+    
+  </entry>
   
   <entry>
     <title>JavaScript中的new操作符的原理解析</title>

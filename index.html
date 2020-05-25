@@ -380,12 +380,24 @@
                 
               
 
-              <time title="创建时间：2020-05-23 14:19:11 / 修改时间：20:07:41" itemprop="dateCreated datePublished" datetime="2020-05-23T14:19:11+08:00">2020-05-23</time>
+              <time title="创建时间：2020-05-23 14:19:11" itemprop="dateCreated datePublished" datetime="2020-05-23T14:19:11+08:00">2020-05-23</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2020-05-24 13:40:04" itemprop="dateModified" datetime="2020-05-24T13:40:04+08:00">2020-05-24</time>
               
             
           </span>
@@ -454,7 +466,7 @@
           
             <p>运行时性能表现（<code>runtime performance</code>）指的是当你的页面在浏览器运行时的性能表现，而不是在下载页面的时候的表现。这篇指南将会告诉你怎么用<code>Chrome DevToos Performance</code>功能去分析运行时性能表现。在<code>RAIL</code>性能评估模型下，你可以在这篇指南中可以学到怎么去用这个<code>performance</code>功能去分析<code>Response</code>, <code>Animation</code>, 以及 <code>Idle</code> 这三个性能指标。</p>
 <p>让我们开始吧<br>在这篇指南中，我们会用Performance工具去分析一个现有的在线DEMO，然后教会你怎么去分析，从而找到性能瓶颈。</p>
-<p>打开Chrome的匿名模式。匿名模式可以保证Chrome在一个相对干净的环境下运行。比如说，你安装了许多chrome插件，这些插件可能会影响我们分析性能表现。<br>在匿名模式下打开右边这个链接，DEMO，这个网页就是我们要用来分析的DEMO。这个页面里都是很多上下移动的蓝色小方块。<br>按下Command+Opiton+I（Mac）或者Control+shift+I (Windows, Linux) 来打开Devtools</p>
+<p>打开Chrome的匿名模式。匿名模式可以保证Chrome在一个相对干净的环境下运行。比如说，你安装了许多chrome插件，这些插件可能会影响我们分析性能表现。<br>在匿名模式下打开右边这个链接，<a href="https://googlechrome.github.io/devtools-samples/jank/" target="_blank" rel="noopener">DEMO</a>，这个网页就是我们要用来分析的DEMO。这个页面里都是很多上下移动的蓝色小方块。<br>按下Command+Opiton+I（Mac）或者Control+shift+I (Windows, Linux) 来打开Devtools</p>
 <p><img src="/imgs/v2-92652c95d9ffcb3d13d24442d2583314_720w.jpg" alt></p>
 <p>模拟移动设备的CPU<br>移动设备的CPU一般比台式机和笔记本弱很多。当你想分析页面的时候，可以用CPU控制器（CPU Throttling）来模拟移动端设备CPU。</p>
 <p>在DevTools中，点击 Performance 的 tab。<br>确保 Screenshots checkbox 被选中<br>点击 Capture Settings（⚙️）按钮，DevTools会展示很多设置，来模拟各种状况<br>对于模拟CPU，选择2x slowdown，于是Devtools就开始模拟两倍低俗CPU</p>
